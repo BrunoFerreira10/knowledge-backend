@@ -1,6 +1,6 @@
 // Update with your config settings.
 
-const { db } = require('./.env')
+const { db } = require('./env-select')
 
 module.exports = {
 

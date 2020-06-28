@@ -116,6 +116,3 @@ knexfile_orig.js
 # dotenv environment variables file
 #.env
 .env.*
-
-# mongodb config
-config/mongodb.js.*

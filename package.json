@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "test-local": "env NODE_ENV=test-local node index.js ",
+    "test-remote": "env NODE_ENV=test-remote node index.js ",
     "production": "pm2 start index.js --name knowledge-backend"
   },
   "keywords": [],
@@ -25,5 +27,7 @@
     "pg": "^8.2.1",
     "pm2": "^4.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }
