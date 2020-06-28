@@ -23,9 +23,11 @@ module.exports = app => {
         try {
             existsOrError(user.name, "Name not provided.")
             existsOrError(user.email, "E-Mail not provided.")
-            existsOrError(user.password, "Password not provided.")
-            existsOrError(user.confirmPassword, "Password confirmation not provided.")
-            equalsOrError(user.password, user.confirmPassword, "Passwords do not match.")
+            if(!user.id){
+                existsOrError(user.password, "Password not provided.")
+                existsOrError(user.confirmPassword, "Password confirmation not provided.")
+                equalsOrError(user.password, user.confirmPassword, "Passwords do not match.")
+            }
 
             const userFromDb = await app.db('users')
                                     .where({email: user.email}).first()
