@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test-local": "env NODE_ENV=test-local node index.js ",
+    "test-local": "env NODE_ENV=test-local nodemon index.js ",
     "test-remote": "env NODE_ENV=test-remote node index.js ",
     "production": "pm2 start index.js --name knowledge-backend"
   },
