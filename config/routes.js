@@ -35,12 +35,12 @@ module.exports = app => {
     
     // The order is important!!
     app.route('/categories/tree')
-        .all(app.config.passport.authenticate())
         .get(app.api.category.getTree)
+        .all(app.config.passport.authenticate())
 
     app.route('/categories/:id')
-        .all(app.config.passport.authenticate())
         .get(app.api.category.getById)
+        .all(app.config.passport.authenticate())        
         .put(admin(app.api.category.save))
         .delete(admin(app.api.category.remove))
 
@@ -50,17 +50,19 @@ module.exports = app => {
         .post(admin(app.api.article.save))     
 
     app.route('/articles/:id')
-        .all(app.config.passport.authenticate())
         .get(app.api.article.getById)    
+        .all(app.config.passport.authenticate())         
         .put(admin(app.api.article.save))
         .delete(admin(app.api.article.remove))
 
     app.route('/categories/:id/articles')
+        .get(app.api.article.getByCategory)    
         .all(app.config.passport.authenticate())
-        .get(app.api.article.getByCategory)
+        
 
     app.route('/stats')
-        //.all(app.config.passport.authenticate())
-        .get(app.api.stat.get)
+        .get(app.api.stat.get)    
+        .all(app.config.passport.authenticate())
+        
         
 }
