@@ -60,22 +60,35 @@ module.exports = app => {
         }
     }
 
-    const get = (req, res) => {
-        if(req.params.id){
-            app.db('users')
-            .select('id', 'name', 'email', 'admin')            
-            .where({id: req.params.id})
-            .whereNull('deletedAt')
-            .first()
-            .then(user => res.json(user))
-            .catch(err => res.status(500).send(err))
-        } else {
-            app.db('users')
-            .select('id', 'name', 'email', 'admin')
-            .whereNull('deletedAt')
-            .then(users => res.json(users))
-            .catch(err => res.status(500).send(err))
-        }
+    const limit = 5;
+
+    const get = async (req, res) => {
+
+        const page = req.query.page || 1
+        const result = await app.db('users').whereNull('deletedAt').count('id').first()
+        const count = parseInt(result.count)
+        
+        app.db('users')
+          .select('id', 'name', 'email', 'admin')
+          .whereNull('deletedAt')
+          .offset(page * limit - limit)
+          .limit(limit)
+          .then(users => res.json({
+            data: users,
+            count,
+            limit
+          }))
+          .catch(err => res.status(500).send(err))        
+    }
+
+    const getById = (req, res) => {        
+        app.db('users')
+          .select('id', 'name', 'email', 'admin')            
+          .where({id: req.params.id})
+          .whereNull('deletedAt')
+          .first()
+          .then(user => res.json(user))
+          .catch(err => res.status(500).send(err))        
     }
 
     const remove = async (req, res) => {
@@ -98,6 +111,7 @@ module.exports = app => {
     return {
         save,
         get,
+        getById,
         remove
     }
 }

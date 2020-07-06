@@ -95,16 +95,26 @@ module.exports = app => {
         return categoriesWithPath
     }
 
-    const get = (req, res) => {
+    const limit = 10;
+
+    const get = async (req, res) => {
+        const page = req.query.page || 1
+        const result = await app.db('categories').count('id').first()
+        const count = parseInt(result.count)
+
         app.db('categories')
-            //.select('id', 'name')     
-            .then(categories => res.json(withPath(categories)))
+            .limit(limit)
+            .offset(page * limit - limit)
+            .then(categories => res.json({
+                data: withPath(categories),
+                count,
+                limit
+            }))
             .catch(err => res.status(500).send(err))
     }
 
     const getById = (req, res) => {
         app.db('categories')
-            //.select('id', 'name')
             .where({ id: req.params.id })
             .first()
             .then(category => res.json(category))
