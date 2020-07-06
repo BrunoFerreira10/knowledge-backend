@@ -29,6 +29,14 @@ module.exports = app => {
                 equalsOrError(user.password, user.confirmPassword, "Passwords do not match.")
             }
 
+            const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+            if(!regexEmail.test(user.email))
+                return res.status(400).send('Invalid email format!')
+
+            const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/
+            if(!user.id && !regexPassword.test(user.password))
+                return res.status(400).send('Invalid password requirements!')
+
             const userFromDb = await app.db('users')
                                     .where({email: user.email}).first()
 

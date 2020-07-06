@@ -14,6 +14,10 @@ module.exports = app => {
         
         if (!user)
             return res.status(400).send('Email not found!')
+        
+            const regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        if(!regexEmail.test(req.body.email))
+            return res.status(400).send('Invalid email format!')
 
         const isMatch = bcrypt.compareSync(req.body.password, user.password)
         if(!isMatch)
